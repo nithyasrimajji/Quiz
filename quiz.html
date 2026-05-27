@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Quiz Application</title>
+
+    <style>
+
+        body {
+            font-family: Arial;
+            background-color: #f2f2f2;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        .quiz-box {
+            background: white;
+            padding: 20px;
+            width: 400px;
+            border-radius: 10px;
+            box-shadow: 0px 0px 10px gray;
+        }
+
+        h2 {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            margin-top: 10px;
+            font-size: 18px;
+        }
+
+        button {
+            margin-top: 15px;
+            padding: 10px;
+            width: 100%;
+            font-size: 16px;
+            cursor: pointer;
+        }
+
+    </style>
+</head>
+
+<body>
+
+    <div class="quiz-box">
+
+        <h2 id="question"></h2>
+
+        <label>
+            <input type="radio" name="answer" value="a">
+            <span id="a_text"></span>
+        </label>
+
+        <label>
+            <input type="radio" name="answer" value="b">
+            <span id="b_text"></span>
+        </label>
+
+        <label>
+            <input type="radio" name="answer" value="c">
+            <span id="c_text"></span>
+        </label>
+
+        <label>
+            <input type="radio" name="answer" value="d">
+            <span id="d_text"></span>
+        </label>
+
+        <button onclick="submitAnswer()">Submit</button>
+        <button onclick="nextQuestion()">Next</button>
+
+    </div>
+
+    <script>
+
+        const quizData = [
+
+            {
+                question: "Which HTML tag is used to create a hyperlink?",
+                a: "<link>",
+                b: "<a>",
+                c: "<href>",
+                d: "<url>",
+                correct: "b"
+            },
+
+            {
+                question: "Which symbol is used for comments in JavaScript?",
+                a: "//",
+                b: "##",
+                c: "<!-- -->",
+                d: "**",
+                correct: "a"
+            },
+
+            {
+                question: "Which CSS property changes text color?",
+                a: "font-color",
+                b: "text-color",
+                c: "color",
+                d: "background-color",
+                correct: "c"
+            },
+
+            {
+                question: "Which company developed JavaScript?",
+                a: "Microsoft",
+                b: "Google",
+                c: "Netscape",
+                d: "Apple",
+                correct: "c"
+            }
+
+        ];
+
+        let currentQuestion = 0;
+        let score = 0;
+        let answered = false;
+
+        loadQuestion();
+
+        function loadQuestion() {
+
+            answered = false;
+
+            clearSelection();
+
+            let q = quizData[currentQuestion];
+
+            document.getElementById("question").innerText = q.question;
+
+            document.getElementById("a_text").innerText = q.a;
+            document.getElementById("b_text").innerText = q.b;
+            document.getElementById("c_text").innerText = q.c;
+            document.getElementById("d_text").innerText = q.d;
+        }
+
+        function clearSelection() {
+
+            let answers = document.getElementsByName("answer");
+
+            answers.forEach(answer => {
+                answer.checked = false;
+            });
+        }
+
+        function submitAnswer() {
+
+            if(answered) {
+                return;
+            }
+
+            let answers = document.getElementsByName("answer");
+            let selectedAnswer;
+
+            answers.forEach(answer => {
+
+                if(answer.checked) {
+                    selectedAnswer = answer.value;
+                }
+
+            });
+
+            if(selectedAnswer == quizData[currentQuestion].correct) {
+                score++;
+                alert("Correct Answer!");
+            } else {
+                alert("Wrong Answer!");
+            }
+
+            answered = true;
+        }
+
+        function nextQuestion() {
+
+            currentQuestion++;
+
+            if(currentQuestion < quizData.length) {
+
+                loadQuestion();
+
+            } else {
+
+                document.querySelector(".quiz-box").innerHTML =
+                "<h2>Your Final Score: " + score + "/" + quizData.length + "</h2>";
+            }
+        }
+
+    </script>
+
+</body>
+</html>
